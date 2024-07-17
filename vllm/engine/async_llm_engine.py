@@ -293,6 +293,7 @@ class _AsyncLLMEngine(LLMEngine):
         arrival_time: Optional[float] = None,
         lora_request: Optional[LoRARequest] = None,
         trace_headers: Optional[Dict[str, str]] = None,
+        sched_metadata: Optional[Dict[str, Optional[int]]] = None
     ) -> None:
         if lora_request is not None and not self.lora_config:
             raise ValueError(f"Got lora_request {lora_request} but LoRA is "
@@ -310,6 +311,7 @@ class _AsyncLLMEngine(LLMEngine):
             arrival_time=arrival_time,
             lora_request=lora_request,
             trace_headers=trace_headers,
+            sched_metadata=sched_metadata,
         )
 
     async def check_health_async(self) -> None:
