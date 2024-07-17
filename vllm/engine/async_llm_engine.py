@@ -627,6 +627,7 @@ class AsyncLLMEngine:
         arrival_time: Optional[float] = None,
         lora_request: Optional[LoRARequest] = None,
         trace_headers: Optional[Dict[str, str]] = None,
+        sched_metadata: Optional[Dict[str, Optional[int]]] = None,
     ) -> AsyncStream:
         if self.log_requests:
             if isinstance(inputs, str):
@@ -669,6 +670,7 @@ class AsyncLLMEngine:
             arrival_time=arrival_time,
             lora_request=lora_request,
             trace_headers=trace_headers,
+            sched_metadata=sched_metadata,
         )
 
         return stream
