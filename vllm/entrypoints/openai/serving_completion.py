@@ -118,6 +118,7 @@ class OpenAIServingCompletion(OpenAIServing):
             prompt_is_tokens, prompts = parse_prompt_format(request.prompt)
             sched_metadata = {}
             sched_metadata['priority'] = self.priority_map[request.user]
+            print(f"Priority of request is {sched_metadata}")
 
             for i, prompt in enumerate(prompts):
                 if prompt_is_tokens:
