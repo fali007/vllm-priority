@@ -856,6 +856,7 @@ class Scheduler:
         force_preempted = 0
 
         if len(prefills.seq_groups) == 0 and policy.forces_preemption():
+            print("Running forced pre-emption")
             remaining_waiting, remaining_running, \
                     force_preempted = self._schedule_force_preemption(
                 remaining_waiting, remaining_running, policy, budget)
