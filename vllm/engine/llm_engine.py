@@ -919,6 +919,10 @@ class LLMEngine:
             model_output: Optional, used to emit speculative decoding metrics
                 which are created by the workers.
         """
+
+        """
+            How to add user to generation and prompt throughput?
+        """
         now = time.time()
 
         # System State
@@ -957,7 +961,7 @@ class LLMEngine:
 
         # Request stats
         #   Latency
-        time_e2e_requests: List[float] = []
+        time_e2e_requests: Dict[int, List[float]] = {1:[], 2:[], 3:[]}
         #   Metadata
         num_prompt_tokens_requests: List[int] = []
         num_generation_tokens_requests: List[int] = []
@@ -976,6 +980,7 @@ class LLMEngine:
 
             for idx, scheduled_seq_group in enumerate(
                     scheduler_outputs.scheduled_seq_groups):
+                priority = scheduled_seq_group.seq_group.sched_metadata['priority']
                 group_was_prefill = idx < scheduler_outputs.num_prefill_groups
                 seq_group = scheduled_seq_group.seq_group
 
@@ -1008,7 +1013,7 @@ class LLMEngine:
                 # which can only happen once.
                 if seq_group.is_finished():
                     # Latency timings
-                    time_e2e_requests.append(now -
+                    time_e2e_requests[priority].append(now -
                                              seq_group.metrics.arrival_time)
 
                     # Metadata
