@@ -50,6 +50,15 @@ class FCFS(Policy):
     def sort_waiting(self) -> bool:
         return False
 
+class EDF(Policy):
+    def get_priority(self, now: float, seq_group: SequenceGroup) -> Tuple[float, ...]:
+        return (seq_group.sched_metadata["tbt"] * seq_group.sampling_params.max_tokens + seq_group.metrics.arrival_time - now)
+    
+    def forces_preemption(self) -> bool:
+        return True
+
+    def sort_waiting(self) -> bool:
+        return True
 
 class SP(Policy):
 
@@ -70,7 +79,7 @@ class SP(Policy):
 
 class PolicyFactory:
 
-    _POLICY_REGISTRY = {'fcfs': FCFS, 'sp': SP}
+    _POLICY_REGISTRY = {'fcfs': FCFS, 'sp': SP, 'edf': EDF}
 
     @classmethod
     def get_policy(cls, policy_name: str, **kwargs) -> Policy:
